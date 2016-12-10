@@ -18,6 +18,8 @@ object EventActor {
                     gasConcentration: Double
                   )
 
+  case object GetEvent
+
   case class Add(event: Event)
 
   sealed trait EventResponse
@@ -30,10 +32,16 @@ class EventActor extends Actor with ActorLogging {
 
   import EventActor._
 
+  var event: Event = Event("Initial event", 1, 2, 3, 4, 5, 6, 7)
+
   override def receive: Receive = {
     case Add(event) =>
-      log.debug("Adding event: " + event)
+      log.info("Setting event: " + event)
+      this.event = event
       sender() ! EventAdded
+    case GetEvent =>
+      log.info("Getting event: " + event)
+      sender() ! event
   }
 
 }

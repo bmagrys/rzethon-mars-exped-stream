@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Urządzenia</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <!--<ul>-->
+    <!--<li *ngFor="let s of someStrings">-->
+      <!--a string: {{ s }}-->
+    <!--</li>-->
+  <!--</ul>-->
+  <div *ngIf="device">
+    <h2>{{device.name}} details!</h2>
+  </div>
+</ion-content>
