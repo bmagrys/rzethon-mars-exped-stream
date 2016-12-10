@@ -30,7 +30,8 @@ public class BluetoothManager extends Activity {
         } else {
             System.out.println("BluetoothAdapter enabled.");
             bluetoothConnectionHandler = new BluetoothConnectionHandler(bluetoothAdapter, this.mainActivity);
-            bluetoothConnectionHandler.run();
+            bluetoothConnectionHandler.start();
+//            bluetoothConnectionHandler.run();
         }
     }
 
