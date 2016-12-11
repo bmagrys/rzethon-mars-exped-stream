@@ -6,7 +6,7 @@ void setup() {
 } 
 
 void loop() {
-  wartoscAnalog = analogRead(A1);
+  wartoscAnalog = analogRead(1);
   wartoscZmapowana = map(wartoscAnalog, 0, 1023, 0, 100);
   sprintf(info, "MQ-2: %d (%d)", wartoscAnalog, wartoscZmapowana);
   if (wartoscZmapowana > 20) {
