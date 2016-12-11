@@ -51,10 +51,9 @@ trait EventService
     pathPrefix("event") {
       pathEndOrSingleSlash {
         post {
-          entity(as[Event]) { ev =>
+          entity(as[DeviceInfo]) { ev =>
             onSuccess(addEvent(ev)) {
-              case EventAdded =>
-
+              case EventDeviceInfoUpdated =>
                 complete(HttpResponse(Created))
             }
           }
@@ -67,16 +66,16 @@ trait EventService
     path("events") {
       get {
         complete {
-          var event = Event("asd",1,2,3,4,5,6,7)
-          var serialized = JacksonWrapper.serialize(event)
+          var deviceInfo: DeviceInfo
+          var serialized: String
 
           val fut = getEvent
           Await.result(fut, 2 seconds)
           fut.onSuccess {
             case ev =>
-              event = ev
+              deviceInfo = ev
           }
-          serialized = JacksonWrapper.serialize(event)
+          serialized = JacksonWrapper.serialize(deviceInfo)
 
           Source
             .tick(2.seconds, 2.seconds, NotUsed)
@@ -85,9 +84,9 @@ trait EventService
                 Await.result(fut, 1 seconds)
                 fut.onSuccess {
                   case ev =>
-                    event = ev
+                    deviceInfo = ev
                 }
-                serialized = JacksonWrapper.serialize(event)
+                serialized = JacksonWrapper.serialize(deviceInfo)
                 }
               )
             .map(_ => ServerSentEvent(serialized))
@@ -117,7 +116,7 @@ trait EventActorApi {
 
   lazy val eventActor = createEventActor
 
-  def getEvent =
+  def getEvents =
     eventActor.ask(GetEvent).mapTo[Event]
 
   def addEvent(event: Event) =
