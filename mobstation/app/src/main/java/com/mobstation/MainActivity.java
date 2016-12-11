@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         bMgr = new BluetoothManager(this);
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-        exec.scheduleAtFixedRate(new MockData(this), 0, 5, TimeUnit.SECONDS);
+        exec.scheduleAtFixedRate(new MockData(this), 0, 2, TimeUnit.SECONDS);
     }
 
     public void addToListView(String messageToAdd) {
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 restMgr.start();
                 tempDataStorage.removeObjectFromList(tempList.get(i));
 
-                if(headerListItems.size() > 200) {
+                if(headerListItems.size() > 2000) {
                     listItems.remove(headerListItems.get(0));
                     headerListItems.remove(0);
                 }

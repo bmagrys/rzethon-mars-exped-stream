@@ -16,6 +16,8 @@ public class MockData implements Runnable{
 
     private MainActivity mainActivity;
 
+    private Random randomGenerator = new Random();
+
     public MockData(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
@@ -27,9 +29,7 @@ public class MockData implements Runnable{
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SSS z");
         Date tempDate;
 
-        Random randomGenerator = new Random();
-
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 100; i++) {
             ReceivedDataObject temp = new ReceivedDataObject();
             temp.setName("Mock_Device_" + String.valueOf(i));
 
@@ -44,6 +44,15 @@ public class MockData implements Runnable{
             temp.setGasConcentration(String.valueOf(randomGenerator.nextInt(1024)));
 
             tempDataStorage.add(temp);
+        }
+
+        int ammToRemove = 100 - (randomGenerator.nextInt(100));
+        if(ammToRemove < 50) {
+            ammToRemove += 50;
+        }
+
+        for(int i = 0; i < ammToRemove; i++) {
+            tempDataStorage.remove(randomGenerator.nextInt(100 - i));
         }
 
         mainActivity.runOnUiThread(new Runnable() {
