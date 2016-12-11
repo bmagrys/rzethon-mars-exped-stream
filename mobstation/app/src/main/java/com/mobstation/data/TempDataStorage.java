@@ -1,6 +1,10 @@
 package com.mobstation.data;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -8,11 +12,17 @@ import java.util.List;
  */
 public class TempDataStorage {
 
-    private String jsonToSend;
+    private List<ReceivedDataObject> dataObject;
     private boolean sendJson = false;
     private String message;
     private String temp = "";
     private boolean keepReading = false;
+    private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SSS z");
+    private Date tempDate;
+
+    public TempDataStorage() {
+        dataObject = new ArrayList<>();
+    }
 
     public void appendMessage(String message) {
         this.message = message;
@@ -25,7 +35,7 @@ public class TempDataStorage {
                 keepReading = true;
             } else if(c == '}') {
                 keepReading = false;
-                jsonToSend = temp + c;
+                temp += c;
                 prepareJsonToSend();
                 sendJson = true;
                 temp = "";
@@ -38,8 +48,8 @@ public class TempDataStorage {
     }
 
     private void prepareJsonToSend() {
-        List<String> items = Arrays.asList(jsonToSend.split("\\s*,\\s*"));
-        jsonToSend = "{\"name\":\"Dev_01\",";
+        ReceivedDataObject temp = new ReceivedDataObject();
+        List<String> items = Arrays.asList(this.temp.split("\\s*,\\s*"));
         for(String s : items) {
             if(s.charAt(0) == '{') {
                 StringBuilder sb = new StringBuilder(s);
@@ -53,42 +63,46 @@ public class TempDataStorage {
                 items.set(items.size()-1, s);
             }
         }
+        temp.setName("Dev_01");
         for(int i = 0; i < items.size(); i++) {
             switch(i) {
                 case 0:
-                    jsonToSend += "\"positionX\": " + items.get(i);
+                    temp.setPositionX(items.get(i));
                     break;
                 case 1:
-                    jsonToSend += ",\"positionY\": " + items.get(i);
+                    temp.setPositionY(items.get(i));
                     break;
                 case 2:
-                    jsonToSend += ",\"temperature\": " + items.get(i);
+                    temp.setTemperature(items.get(i));
                     break;
                 case 3:
-                    jsonToSend += ",\"humidity\": " + items.get(i);
+                    temp.setHumidity(items.get(i));
                     break;
                 case 4:
-                    jsonToSend += ",\"lightIntensity\": " + items.get(i);
+                    temp.setLightIntensity(items.get(i));
                     break;
                 case 5:
-                    jsonToSend += ",\"vibrations\": " + items.get(i);
+                    temp.setVibrations(items.get(i));
                     break;
                 case 6:
-                    jsonToSend += "," +
-                            "\"gasConcentration\": " + items.get(i);
+                    temp.setGasConcentration(items.get(i));
                     break;
             }
         }
-        jsonToSend += "}";
+        tempDate = new Date();
+        temp.setTimeStamp(dateFormat.format(tempDate));
+        dataObject.add(temp);
     }
 
-    public String getJsonToSend() {
+    public List<ReceivedDataObject> getJsonToSend() {
         if(sendJson) {
-            String temp = jsonToSend;
             sendJson = false;
-            jsonToSend = "";
-            return temp;
+            return dataObject;
         } else
             return null;
+    }
+
+    public void removeObjectFromList(ReceivedDataObject rdo) {
+        dataObject.remove(rdo);
     }
 }

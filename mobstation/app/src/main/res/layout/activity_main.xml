@@ -34,7 +34,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Transfer history:"
                 android:id="@+id/transferHistoryTextView" android:layout_gravity="center_horizontal"/>
-        <ListView
+        <ExpandableListView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"

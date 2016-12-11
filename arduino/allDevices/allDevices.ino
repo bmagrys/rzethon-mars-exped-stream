@@ -35,7 +35,6 @@ void loop() {
     lightIntensitySensorValue = (lightIntensitySensorValue + analogRead(lightIntensityAnalogInputPin))/2;
     gasConAnlVal = (gasConAnlVal + analogRead(gasConAnlInputPin))/2;
   } else {
-    //String tmp = "ASDASF";
     String tmp = "{" + String(0) + "," + String(0) + "," + String(dhtTemperature) + "," + String(dhtHumidity) + "," + String(lightIntensitySensorValue) + "," + String(wibrSensInput) + "," + String(gasConAnlVal) + "}"; 
     for(int i = 0; i < tmp.length(); i++) {
       bluetoothSerial.write(tmp[i]);
