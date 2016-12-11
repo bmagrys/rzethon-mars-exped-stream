@@ -6,7 +6,9 @@
 
 <ion-content padding>
   <h1>Stacje pogodowe</h1>
-  <ion-item *ngFor="let name of deviceNames" (click)="onSelect(name)">
-      {{name}}
-  </ion-item>
+  <ion-list>
+    <button ion-item *ngFor="let name of deviceNames" (click)="onSelect(name)">
+      {{ name }}
+    </button>
+  </ion-list>
 </ion-content>
