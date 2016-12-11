@@ -28,4 +28,11 @@ export class DevicesComponent {
     this.navCtrl.push(DeviceDetailComponent, {deviceName: name});
   }
 
+  getDeviceNamesByName(ev: any) {
+    let name = ev.target.value;
+    if(name && name.trim() != '') {
+      this.deviceService.getDeviceNamesByName(name).then(deviceNames => this.deviceNames = deviceNames);
+    }
+  }
+
 }

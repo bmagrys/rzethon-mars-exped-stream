@@ -6,6 +6,7 @@
 
 <ion-content padding>
   <h1>Stacje pogodowe</h1>
+  <ion-searchbar (ionInput)="getDeviceNamesByName($event)"></ion-searchbar>
   <ion-item *ngFor="let name of deviceNames" (click)="onSelect(name)">
       {{name}}
   </ion-item>

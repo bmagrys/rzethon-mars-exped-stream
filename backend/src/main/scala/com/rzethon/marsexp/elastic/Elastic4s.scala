@@ -15,6 +15,10 @@ object Elastic4s {
 
   def name = "elastic-actor"
 
+  case class Add(deviceInfo: DeviceInfo)
+
+  case class Search(name: String)
+
   case object WeatherEvent {
     def fromDeviceInfo(deviceInfo: DeviceInfo): WeatherEvent = {
       WeatherEvent(
@@ -61,16 +65,29 @@ object Elastic4s {
 class Elastic4s extends Actor with ActorLogging {
   import com.rzethon.marsexp.elastic.Elastic4s._
 
+  import context.dispatcher
+
   val client = ElasticClient.transport(ElasticsearchClientUri("elasticsearch://localhost:9300?cluster.name=rzethon_analytics"))
 
   override def receive: Receive = {
-    case deviceInfo: DeviceInfo => {
+    case Add(deviceInfo) => {
       log.info("Putting to elasticsearch")
       val event = WeatherEvent.fromDeviceInfo(deviceInfo)
       client.execute {
         indexInto("weather" / "event").doc(event)
       }
     }
+    // case Search(name) => {
+    //   log.info("Searching in elasticsearch")
+    //   val list = client.execute {
+    //     search in "weather"->"event" query "Dev*"
+    //   }.await
+    //   log.info(list.toString)
+      // list.onSuccess {
+        // case list =>
+        // sender() ! list
+      // }
+    // }
     case _: Any => log.error("Wrong message")
   }
 
