@@ -34,17 +34,22 @@ object DevicesActor {
 class DevicesActor extends Actor with ActorLogging {
 
   import DevicesActor._
+  import com.rzethon.marsexp.elastic.Elastic4s._
 
   val elActor = context.actorOf(Elastic4s.props, Elastic4s.name)
 
   var devices: Map[String, DeviceInfo] = Map.empty
 
   override def receive: Receive = {
+    case Search(name) => {
+      log.info("Searching in map..,")
+      sender() ! devices.filterKeys(key => key.contains(name)).keySet.toList
+    }
     case Update(deviceInfo) =>
       log.info("Updating device info: " + deviceInfo)
       this.devices + (deviceInfo.name -> deviceInfo)
       devices = devices + (deviceInfo.name -> deviceInfo)
-      elActor ! deviceInfo
+      elActor ! Add(deviceInfo)
       sender() ! EventDeviceInfoUpdated
     case GetDeviceInfo(name) =>
       log.info("Get device info for name: " + name)

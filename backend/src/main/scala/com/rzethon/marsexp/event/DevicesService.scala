@@ -14,6 +14,7 @@ import com.rzethon.marsexp.{CorsSupport, JacksonWrapper}
 import de.heikoseeberger.akkasse.EventStreamMarshalling._
 import de.heikoseeberger.akkasse.ServerSentEvent
 
+import com.rzethon.marsexp.elastic.Elastic4s
 import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContext, Future}
 
@@ -44,9 +45,13 @@ trait DevicesService
   override def createDevicesActor: ActorRef =
     actorSystem.actorOf(DevicesActor.props, DevicesActor.name)
 
+  // override def createElastic4sActor: ActorRef =
+    // actorSystem.actorOf(Elastic4s.props, Elastic4s.name)
+
   val routes: Route =
     updateDeviceInfoRoute ~
       corsHandler(getDeviceByNameRoute) ~
+      corsHandler(getDevicesByNameRoute) ~
       corsHandler(getDevicesRoute)
 
   def updateDeviceInfoRoute(): Route =
@@ -89,6 +94,19 @@ trait DevicesService
       }
     }
 
+  def getDevicesByNameRoute: Route =
+    path("search" / "devices") {
+      get {
+        parameters('name.as[String]) { name =>
+            onSuccess(getDevicesByName(name)) { list =>
+              complete(OK, list)
+
+            }
+
+        }
+      }
+    }
+
   def getDevicesRoute: Route =
     pathPrefix("devices") {
       get {
@@ -107,6 +125,7 @@ trait DevicesActorApi {
 
   import akka.pattern.ask
   import com.rzethon.marsexp.event.DevicesActor._
+  import com.rzethon.marsexp.elastic.Elastic4s._
 
   implicit def executionContext: ExecutionContext
 
@@ -114,7 +133,11 @@ trait DevicesActorApi {
 
   def createDevicesActor: ActorRef
 
+  // def createElastic4sActor: ActorRef
+
   lazy val devicesActor: ActorRef = createDevicesActor
+
+  // lazy val elastic4sActor: ActorRef = createElastic4sActor
 
   def getDeviceInfo(name: String): Future[Option[DeviceInfo]] =
     devicesActor.ask(GetDeviceInfo(name)).mapTo[Option[DeviceInfo]]
@@ -125,4 +148,6 @@ trait DevicesActorApi {
   def updateDeviceInfo(deviceInfo: DeviceInfo): Future[EventResponse] =
     devicesActor.ask(Update(deviceInfo)).mapTo[EventResponse]
 
+  def getDevicesByName(name: String): Future[List[String]] =
+    devicesActor.ask(Search(name)).mapTo[List[String]]
 }
