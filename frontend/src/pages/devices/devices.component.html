@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Urządzenia</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h1>Stacje pogodowe</h1>
+  <ion-searchbar (ionInput)="getDeviceNamesByName($event)"></ion-searchbar>
+  <ion-list>
+    <button ion-item *ngFor="let name of deviceNames" (click)="onSelect(name)">
+      {{ name }}
+    </button>
+  </ion-list>
+</ion-content>
