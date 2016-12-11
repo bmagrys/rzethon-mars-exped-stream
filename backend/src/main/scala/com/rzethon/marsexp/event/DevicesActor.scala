@@ -2,8 +2,8 @@ package com.rzethon.marsexp.event
 
 import akka.actor.{Actor, ActorLogging, Props}
 
-object EventActor {
-  def props = Props(new EventActor)
+object DevicesActor {
+  def props = Props(new DevicesActor)
 
   def name = "event-actor"
 
@@ -30,9 +30,9 @@ object EventActor {
 
 }
 
-class EventActor extends Actor with ActorLogging {
+class DevicesActor extends Actor with ActorLogging {
 
-  import EventActor._
+  import DevicesActor._
 
   var devices: Map[String, DeviceInfo] = Map.empty
 
@@ -44,7 +44,7 @@ class EventActor extends Actor with ActorLogging {
       sender() ! EventDeviceInfoUpdated
     case GetDeviceInfo(name) =>
       log.info("Get device info for name: " + name)
-      sender() ! devices(name)
+      sender() ! devices.get(name)
     case GetDevices =>
       val names = devices.values.map(info => info.name).toList
       log.info("Devices: " + names)

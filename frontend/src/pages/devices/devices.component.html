@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Urządzenia</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item *ngFor="let name of deviceNames" (click)="onSelect(name)">
+      {{name}}
+  </ion-item>
+  <!--<router-outlet></router-outlet>-->
+    <!--<a *ngFor="let name of deviceNames" [routerLink]="['/detail', name]">-->
+        <!--<h4>{{name}}</h4>-->
+    <!--</a>-->
+  <!--<button ion-button (click)="pushPage(name)">-->
+    <!--Go to OtherPage-->
+  <!--</button>-->
+  <!--<device-detail [device]="selectedDevice"></device-detail>-->
+</ion-content>

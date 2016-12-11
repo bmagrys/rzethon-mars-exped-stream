@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Szczegóły
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <div *ngIf="device">
+    <h2>Szczegóły urządzenia o nazwie {{device.name}}</h2>
+    <p><b>Pozycja X:</b> {{device.positionX}}</p>
+    <p><b>Pozycja Y:</b> {{device.positionY}}</p>
+    <p><b>Temperatura:</b> {{device.temperature}}</p>
+    <p><b>Wilgotność:</b> {{device.humidity}}</p>
+    <p><b>Intensywność światła:</b> {{device.lightIntensity}}</p>
+    <p><b>Moc drgań:</b> {{device.vibrations}}</p>
+    <p><b>Koncentracja łatwopalnych gazów:</b> {{device.gasConcentration}}</p>
+    <button (click)="goBack()">Back</button>
+  </div>
+
+</ion-content>

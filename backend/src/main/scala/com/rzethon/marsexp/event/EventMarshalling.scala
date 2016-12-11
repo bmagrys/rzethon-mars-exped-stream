@@ -5,7 +5,7 @@ import spray.json.DefaultJsonProtocol
 
 trait EventMarshalling extends SprayJsonSupport with DefaultJsonProtocol {
 
-  import com.rzethon.marsexp.event.EventActor._
+  import com.rzethon.marsexp.event.DevicesActor._
 
-  implicit val eventFormat = jsonFormat8(Event)
+  implicit val deviceInfoFormat = jsonFormat8(DeviceInfo)
 }

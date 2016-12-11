@@ -1,6 +1,6 @@
-import {deserialize, serialize} from 'cerialize';
+import {deserialize} from "cerialize";
 
-export class DevDetails {
+export class Device {
   @deserialize public name: string;
   @deserialize public positionX: number;
   @deserialize public positionY: number;

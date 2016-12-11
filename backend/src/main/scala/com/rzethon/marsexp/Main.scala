@@ -6,8 +6,8 @@ import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
 import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
 import com.typesafe.config.ConfigFactory
-import com.rzethon.marsexp.event.EventActor._
-import com.rzethon.marsexp.event.EventServiceApi
+import com.rzethon.marsexp.event.DevicesActor._
+import com.rzethon.marsexp.event.DevicesServiceApi
 
 import scala.io.StdIn
 
@@ -21,7 +21,7 @@ object Main extends App with Startup with RequestTimeout {
   implicit val timeout = configuredRequestTimeout(config)
 
   val api = new RestApi {
-    override def invitationServiceApi: EventServiceApi = new EventServiceApi()
+    override def invitationServiceApi: DevicesServiceApi = new DevicesServiceApi()
   }
 
   startHttpServer(api.routes, host, port)

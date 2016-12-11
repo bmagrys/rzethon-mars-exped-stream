@@ -1,10 +1,10 @@
 package com.rzethon.marsexp
 
-import com.rzethon.marsexp.event.EventServiceApi
+import com.rzethon.marsexp.event.DevicesServiceApi
 
 trait RestApi {
 
-  def invitationServiceApi: EventServiceApi
+  def invitationServiceApi: DevicesServiceApi
 
   def routes =
     invitationServiceApi.routes
