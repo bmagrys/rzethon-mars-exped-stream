@@ -46,8 +46,8 @@ trait DevicesService
 
   val routes: Route =
     updateDeviceInfoRoute ~
-      corsHandler(getDeviceByNameRoute)
-  corsHandler(getDevicesRoute)
+      corsHandler(getDeviceByNameRoute) ~
+      corsHandler(getDevicesRoute)
 
   def updateDeviceInfoRoute(): Route =
     pathPrefix("event") {
@@ -65,7 +65,7 @@ trait DevicesService
     }
 
   def getDeviceByNameRoute: Route =
-    path("event") {
+    path("device") {
       get {
         parameters('name.as[String]) { name =>
           complete {
@@ -90,7 +90,7 @@ trait DevicesService
     }
 
   def getDevicesRoute: Route =
-    path("events") {
+    pathPrefix("devices") {
       get {
         onSuccess(getDevices) { devices =>
           complete(OK, devices)

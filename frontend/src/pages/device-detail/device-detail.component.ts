@@ -43,9 +43,7 @@ export class DeviceDetailComponent {
   }
 
   getDeviceInfo(name: String) {
-    // if (this.source != null)
-    //   this.source.removeEventListener('message', this.updateDeviceInfo, false);
-    this.source = new EventSource('http://192.168.137.1:5001/event?name=' + name);
+    this.source = new EventSource('http://192.168.137.1:5001/device?name=' + name);
     console.log('getDeviceInfo()');
     this.source.addEventListener('message', this.updateDeviceInfo, false);
   }
